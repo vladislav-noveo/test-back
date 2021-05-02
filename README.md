@@ -16,9 +16,11 @@ You are about to code an API to handle bookings for patients. You are asked to i
 
 The easiest way to launch this project is by using [Laravel Sail](https://laravel.com/docs/8.x/sail#introduction)
 
-`composer install`
-`cp .env.example .env`
-`./vendor/bin/sail up`
+-   `composer install`
+-   `cp .env.example .env`
+-   `./vendor/bin/sail up`
+-   `./vendor/bin/sail artisan key:generate`
+-   `./vendor/bin/sail artisan migrate:fresh --seed`
 
 ## Models
 
