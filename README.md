@@ -1,62 +1,105 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Joovence back-end test
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This is the back-end test for your Joovence application. The goal is to evaluate your capabilities on creating an API and how you structure your code.
 
-## About Laravel
+## Instructions
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+You are about to code an API to handle bookings for patients. You are asked to implement the following :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+-   Get the list of doctors
+-   Get the list of availabilities for a doctor
+-   Get the list of bookings for the logged in user
+-   Create a booking for the logged in user
+-   Cancel a booking the logged in user
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
 
-## Learning Laravel
+The easiest way to launch this project is by using [Laravel Sail](https://laravel.com/docs/8.x/sail#introduction)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+`composer install`
+`./vendor/bin/sail up`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Models
 
-## Laravel Sponsors
+`Doctor` represents a doctor
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+-   `name` represents the name of the doctor
+-   `agenda` represents the way a doctor handles availabilities. Possible values are :
+    -   `database` (default) for a doctor who uses database for availabilities
+    -   `doctolib` for a doctor who uses **Doctolib**
+    -   `clicrdv` for a doctor who uses **ClicRDV**
+-   `external_agenda_id` (nullable) represents the id of the external agenda
 
-### Premium Partners
+`Availability` represents a doctor's availability when `agenda` is `database`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+-   `doctor_id` represents the doctor's id
+-   `start` represents the beginning of the availability
+-   `end` represents the end of the availability
 
-## Contributing
+`Booking` represents a booking
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+-   `user_id` represents the user's id
+-   `doctor_id` represents the doctor's id
+-   `date` represents the date and time of the booking
+-   `status` represents the status of the booking. Possible values are :
+    -   `confirmed` (default) when the booking is created
+    -   `canceled` when the booking in canceled
 
-## Code of Conduct
+## External agendas
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Here are the endpoints to fetch availabilities for external agendas
 
-## Security Vulnerabilities
+| Service  | Endpoint                                                                                                                |
+| -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Doctolib | GET [https://tech-test.joovence.dev/api/doctolib?doctorId=EXTERNAL_ID](test.joovence.dev/doctolib?doctorId=EXTERNAL_ID) |
+| ClicRDV  | GET [https://tech-test.joovence.dev/api/clic-rdv?proId=EXTERNAL_ID](test.joovence.dev/clic-rdv?proId=EXTERNAL_ID)       |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Create the following endpoints
 
-## License
+### Doctors
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+-   `GET /doctors`
+    -   **Response** : list of doctors
+    -   A doctor should have the following attributes :
+
+| Attribute | Description              |
+| --------- | ------------------------ |
+| `id`      | identifier of the doctor |
+| `name`    | name of the doctor       |
+
+### Availabilities
+
+-   `GET /doctors/{doctorId}/availabilities`
+    -   **Response** : list of availabilities
+    -   An availability should have the following attributes :
+
+| Attribute | Description                                   |
+| --------- | --------------------------------------------- |
+| `start`   | DateTime of the beginning of the availability |
+
+### Bookings
+
+-   `GET /bookings`
+    -   **Response** : list of bookings
+    -   The list should be ordered by `date` from most recent to most distant in time.
+    -   A booking should have the following attributes :
+
+| Attribute   | Description               |
+| ----------- | ------------------------- |
+| `id`        | identifier of the booking |
+| `doctor_id` | identifier of the doctor  |
+| `user_id`   | identifier of the user    |
+| `date`      | DateTime of the booking   |
+| `status`    | status of the booking     |
+
+-   `POST /bookings`
+    -   **Response** : the created booking
+    -   The request should have the following parameters :
+
+| Parameter   | Description              |
+| ----------- | ------------------------ |
+| `doctor_id` | identifier of the doctor |
+| `date`      | DateTime of the booking  |
+
+-   `GET /bookings/{bookingId}/cancel`
+    -   **Response** : the canceled booking
