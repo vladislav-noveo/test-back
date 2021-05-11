@@ -12,15 +12,23 @@ You are about to code an API to handle bookings for patients. You are asked to i
 -   Create a booking for the logged in user
 -   Cancel a booking the logged in user
 
+## How to submit
+
+-   Fork the repository
+-   Create a branch `submission`
+-   Create a pull request to `master` on your forked repository
+
 ## Installation
 
-The easiest way to launch this project is by using [Laravel Sail](https://laravel.com/docs/8.x/sail#introduction)
+The easiest way to launch this project is by using [Laravel Sail](https://laravel.com/docs/8.x/sail#introduction).
 
 -   `composer install`
 -   `cp .env.example .env`
 -   `./vendor/bin/sail up`
 -   `./vendor/bin/sail artisan key:generate`
 -   `./vendor/bin/sail artisan migrate:fresh --seed`
+
+> You are free to use another way to launch the project.
 
 ## Models
 
@@ -29,8 +37,8 @@ The easiest way to launch this project is by using [Laravel Sail](https://larave
 -   `name` represents the name of the doctor
 -   `agenda` represents the way a doctor handles availabilities. Possible values are :
     -   `database` (default) for a doctor who uses database for availabilities
-    -   `doctolib` for a doctor who uses **Doctolib**
-    -   `clicrdv` for a doctor who uses **ClicRDV**
+    -   `doctolib` for a doctor who uses **Doctolib** Check `External agendas` section for more information
+    -   `clicrdv` for a doctor who uses **ClicRDV**. Check `External agendas` section for more information
 -   `external_agenda_id` (nullable) represents the id of the external agenda
 
 `Availability` represents a doctor's availability when `agenda` is `database`
@@ -52,10 +60,10 @@ The easiest way to launch this project is by using [Laravel Sail](https://larave
 
 Here are the endpoints to fetch availabilities for external agendas
 
-| Service  | Endpoint                                                                                                                |
-| -------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Doctolib | GET [https://tech-test.joovence.dev/api/doctolib?doctorId=EXTERNAL_ID](test.joovence.dev/doctolib?doctorId=EXTERNAL_ID) |
-| ClicRDV  | GET [https://tech-test.joovence.dev/api/clic-rdv?proId=EXTERNAL_ID](test.joovence.dev/clic-rdv?proId=EXTERNAL_ID)       |
+| Service  | Endpoint                                                                                                                                                             |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Doctolib | GET [https://tech-test.joovence.dev/api/doctolib/{EXTERNAL_ID}/availabilities](https://tech-test.joovence.dev/api/doctolib/{EXTERNAL_ID}/availabilities)             |
+| ClicRDV  | GET [https://tech-test.joovence.dev/api/clic-rdv/availabilities?proId={EXTERNAL_ID}](https://tech-test.joovence.dev/api/clic-rdv/availabilities?proId={EXTERNAL_ID}) |
 
 ## Create the following endpoints
 
