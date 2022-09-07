@@ -30,6 +30,15 @@ The easiest way to launch this project is by using [Laravel Sail](https://larave
 
 > You are free to use another way to launch the project.
 
+## Tests
+
+To run tests after installation
+
+-   `cp .env.testing.example .env.testing`
+-   `./vendor/bin/sail artisan key:generate --env=testing`
+-   `./vendor/bin/sail artisan migrate:fresh --env=testing`
+-   `./vendor/bin/sail artisan test`
+
 ## Models
 
 `Doctor` represents a doctor

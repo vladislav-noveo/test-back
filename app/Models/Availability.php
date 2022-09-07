@@ -9,6 +9,10 @@ class Availability extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'start' => 'datetime',
+    ];
+
     public function doctor()
     {
         return $this->belongsTo(Doctor::class);
