@@ -1,7 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\DoctorController;
+use App\Http\Controllers\Api\BookingController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\AvailabilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('token', [AuthController::class, 'store'])->name('token.get');
+
+Route::get('doctors', [DoctorController::class, 'getList'])->name('doctors.get');
+
+Route::get('doctors/{doctor}/availabilities', [AvailabilityController::class, 'getForDoctor'])->name('availabilities.get');
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('bookings', [BookingController::class, 'getForUser'])->name('bookings.get');
+
+    Route::post('bookings', [BookingController::class, 'create'])->name('bookings.create');
+
+    Route::get('bookings/{booking}/cancel', [BookingController::class, 'cancel'])->name('bookings.cancel');
 });
