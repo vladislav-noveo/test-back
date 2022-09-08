@@ -16,7 +16,8 @@ class AvailabilityService
     public function __construct(private DoctolibService $doctolibService, private ClicRDVService $clicRDVService)
     {}
 
-    public function getDoctorAvailabilities(Doctor $doctor)
+    #[ArrayShape(AvailabilityDto::class)]
+    public function getDoctorAvailabilities(Doctor $doctor): array
     {
         $availabilities = match($doctor->agenda) {
             Doctor::AGENDA_DATABASE => $this->getDatabaseAvailabilities($doctor),
